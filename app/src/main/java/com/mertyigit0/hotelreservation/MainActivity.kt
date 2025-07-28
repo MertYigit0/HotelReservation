@@ -8,10 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mertyigit0.hotelreservation.presentation.screen.HomeScreen
+import com.mertyigit0.hotelreservation.presentation.screen.HotelDetailScreen
 import com.mertyigit0.hotelreservation.ui.theme.HotelReservationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,8 +24,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             HotelReservationTheme {
+                var showDetail by remember { mutableStateOf(false) }
+                
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    HomeScreen()
+                    if (showDetail) {
+                        HotelDetailScreen(
+                            onBackClick = { showDetail = false },
+                            onMenuClick = { /* Handle menu */ },
+                            onBookingClick = { /* Handle booking */ }
+                        )
+                    } else {
+                        HomeScreen(
+                            onHotelClick = { /* Navigate to detail */ showDetail = true }
+                        )
+                    }
                 }
             }
         }
@@ -36,5 +49,13 @@ class MainActivity : ComponentActivity() {
 fun HomeScreenPreview() {
     HotelReservationTheme {
         HomeScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HotelDetailScreenPreview() {
+    HotelReservationTheme {
+        HotelDetailScreen()
     }
 }
