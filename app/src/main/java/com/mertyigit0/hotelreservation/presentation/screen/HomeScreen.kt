@@ -24,7 +24,8 @@ import com.mertyigit0.hotelreservation.presentation.viewmodel.HomeViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onHotelClick: (Hotel) -> Unit = {},
-    onNotificationClick: () -> Unit = {}
+    onNotificationClick: () -> Unit = {},
+    onBottomNavSelected: (BottomNavItem) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
@@ -71,7 +72,10 @@ fun HomeScreen(
         // Bottom Navigation
         BottomNavigation(
             selectedItem = selectedBottomNav,
-            onItemSelected = { selectedBottomNav = it }
+            onItemSelected = { 
+                selectedBottomNav = it
+                onBottomNavSelected(it)
+            }
         )
     }
 }

@@ -11,8 +11,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.mertyigit0.hotelreservation.presentation.components.BottomNavItem
 import com.mertyigit0.hotelreservation.presentation.screen.HomeScreen
 import com.mertyigit0.hotelreservation.presentation.screen.HotelDetailScreen
+import com.mertyigit0.hotelreservation.presentation.screen.ScheduleScreen
 import com.mertyigit0.hotelreservation.ui.theme.HotelReservationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,18 +27,30 @@ class MainActivity : ComponentActivity() {
         setContent {
             HotelReservationTheme {
                 var showDetail by remember { mutableStateOf(false) }
+                var selectedBottomNav by remember { mutableStateOf(BottomNavItem.HOME) }
                 
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    if (showDetail) {
-                        HotelDetailScreen(
-                            onBackClick = { showDetail = false },
-                            onMenuClick = { /* Handle menu */ },
-                            onBookingClick = { /* Handle booking */ }
-                        )
-                    } else {
-                        HomeScreen(
-                            onHotelClick = { /* Navigate to detail */ showDetail = true }
-                        )
+                    when {
+                        showDetail -> {
+                            HotelDetailScreen(
+                                onBackClick = { showDetail = false },
+                                onMenuClick = { /* Handle menu */ },
+                                onBookingClick = { /* Handle booking */ }
+                            )
+                        }
+                        selectedBottomNav == BottomNavItem.SCHEDULE -> {
+                            ScheduleScreen(
+                                onBackClick = { selectedBottomNav = BottomNavItem.HOME },
+                                onSettingsClick = { /* Handle settings */ },
+                                onBookingClick = { /* Handle booking click */ }
+                            )
+                        }
+                        else -> {
+                            HomeScreen(
+                                onHotelClick = { /* Navigate to detail */ showDetail = true },
+                                onBottomNavSelected = { navItem -> selectedBottomNav = navItem }
+                            )
+                        }
                     }
                 }
             }
@@ -57,5 +71,13 @@ fun HomeScreenPreview() {
 fun HotelDetailScreenPreview() {
     HotelReservationTheme {
         HotelDetailScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScheduleScreenPreview() {
+    HotelReservationTheme {
+        ScheduleScreen()
     }
 }

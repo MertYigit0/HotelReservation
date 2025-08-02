@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 
 enum class BottomNavItem(val title: String, val icon: ImageVector) {
     HOME("Home", Icons.Default.Home),
-    CALENDAR("Calendar", Icons.Default.DateRange),
+    SCHEDULE("Schedule", Icons.Default.DateRange),
     BOOKMARK("Bookmark", Icons.Default.Star),
     PROFILE("Profile", Icons.Default.Person)
 }
